@@ -231,7 +231,8 @@ def sam_segment(
         point_labels=None,
         boxes=transformed_boxes.to(sam_device),
         multimask_output=False)
-    masks = masks.cpu().numpy()
+    # masks = masks.cpu().numpy()
+    masks = masks.permute(1, 0, 2, 3).cpu().numpy()
     return create_tensor_output(image_np, masks, boxes)
 
 
@@ -337,7 +338,7 @@ class InvertMask:
 
 if __name__ == "__main__":
     input_image = Image.open(
-        '/data/dev/comfyui-latest/custom_nodes/comfyui_segment_anything/human.jpg').convert('RGBA')
+        '/Users/night/Downloads/image-34.png').convert('RGBA')
     dino_model = load_groundingdino_model('GroundingDINO_SwinT_OGC (694MB)')
     boxes = groundingdino_predict(
         dino_model,
